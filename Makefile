@@ -1,29 +1,34 @@
-src/main: build/main.o build/Card.o build/GoFish.o build/GFPlayer.o
-	g++ -o build/main -lncurses build/main.o build/Card.o build/GoFish.o build/GFPlayer.o
-	./build/main
+CC=g++
+STD=c++17
 
-build/main.o build/Card.o build/GoFish.o build/GFPlayer.o: src/main.cpp src/Card.cpp src/GoFish.cpp src/GFPlayer.cpp
-	mkdir -p build
-	g++ -c src/main.cpp -o build/main.o
-	g++ -c src/Card.cpp -o build/Card.o
-	g++ -c src/GoFish.cpp -o build/GoFish.o
-	g++ -c src/GFPlayer.cpp -o build/GFPlayer.o
+# Link the object files with ncurses for the main program
+build/main: build/main.o build/Card.o build/GoFish.o build/GFPlayer.o
+	# This uses special variables to avoid retyping all the requirements
+	$(CC) -g -O0 -o $@ $^ -std=$(STD) -lncursesw 
 
-src/main.cpp:
-	echo "int main() { return 0; }" > src/main.cpp
+# Link the object files with ncurses for the test program
+build/test: build/tests.o build/Card.o build/GoFish.o build/GFPlayer.o
+	$(CC) -g -O0 -o $@ $^ -std=$(STD) -lncursesw
 
-src/Card.cpp:
-	echo "int main() { return 0; }" > src/Card.cpp
+# Build a single c++ source file
+build/%.o: src/%.cpp
+	# Create the output directory if needed
+	@mkdir -p build
+	# Tell the compiler to figure out what the source file depends on so that make on rebuilds what is needed
+	@$(CC) -MM -MT $@ $< > build/$*.d
+	# Actually compile the file
+	$(CC) -g -O0 -c -o $@ $< -std=$(STD)
 
-src/GoFish.cpp:
-	echo "int main() { return 0; }" > src/GoFish.cpp
+# Include all the extra info the compiler created
+-include build/*.d
 
-src/GFPlayer.cpp:
-	echo "int main() { return 0; }" > src/GFPlayer.cpp
+# Tell make that the following should always be run
+.PHONY: test all clean
 
-test: src/Card.cpp src/GoFish.cpp src/GFPlayer.cpp src/tests.cpp
-	g++ src/tests.cpp src/GFPlayer.cpp src/GoFish.cpp src/Card.cpp -lncurses -o build/tests
-	./build/tests
+test: build/test
+	./build/test
+
+all: build/test build/main
 
 clean:
 	rm -rf build
