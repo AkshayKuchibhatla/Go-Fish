@@ -21,6 +21,9 @@ class GFPlayer { // Object describing a player and their actions
         int answerCol;
         int booksRow;
         int booksCol;
+
+        // Returns if the player is controled by the user or by the computer.
+        bool isUsr();
         // Adds the specified card to the player's hand.
         // @param c: the card.
         void addCard(Card c);

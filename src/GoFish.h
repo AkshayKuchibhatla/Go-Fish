@@ -46,4 +46,8 @@ class GoFish { // Singleton class that controls the flow of gameplay.
         char rankToChar(Rank r);
         // Returns the player list
         vector<GFPlayer> getPlayerList();
+        // Displays the winner
+        void displayWinner(int player);
+        // Converts str to char[] (for mvaddstr)
+        static char* strToCharArr(string str);
 };

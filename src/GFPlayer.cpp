@@ -65,7 +65,7 @@ void GFPlayer::renderHand() {
     
     if (playerNumber == 0 || playerNumber == 1) {
         for (i = 0; i < hand.size(); i++) {
-            hand.at(i).draw(startRow, startCol + i * 3, handFaceUp, true);
+            hand.at(i).draw(startRow, startCol + i * 3, handFaceUp, true, false);
         }
     }
 }
@@ -162,9 +162,11 @@ void GFPlayer::renderBooks() {
     char allbooksCopy[1024];
     strcpy(allbooksCopy, allbooks.c_str());
     // cout << "Player No: " << playerNumber << "\n\r";
-    if(0 == playerNumber) {
-        mvaddstr(32, 35, allbooksCopy);
-    } else {
-        mvaddstr(9, 35, allbooksCopy);
-    }
+    mvaddstr(booksRow, booksCol, allbooksCopy);
+}
+bool GFPlayer::isUsr() {
+    if (playerNumber == 0) 
+        return true;
+    else
+        return false;
 }

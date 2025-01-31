@@ -44,7 +44,7 @@ struct Card {
     bool equals(Card card);
     bool isGreaterThan(Card card);
     bool isLessThan(Card card);
-    void draw(int row, int col, bool faceUp, bool narrow);
+    void draw(int row, int col, bool faceUp, bool narrow, bool shorter);
 };
 
 struct Deck {

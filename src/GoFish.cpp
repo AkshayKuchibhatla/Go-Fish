@@ -53,6 +53,8 @@ GoFish::GoFish(bool testing) {
 }
 void GoFish::startGame() {
     char x;
+    int i;
+    int winner;
     currentPlayer = 0;
     
     while (!gameOver()) {
@@ -60,9 +62,18 @@ void GoFish::startGame() {
         bool given = giveCards(currentPlayer, getNextPlayer(), x);
         
         givenMessage(given);
-        playerList.at(0).makeBooks();
+        for (i = 0; i < playerList.size(); i++) {
+            playerList.at(i).makeBooks();
+        }
         refreshScreen();
     }
+    winner = 0;
+    for (i = 0; i < playerList.size(); i++) {
+        if (playerList.at(i).getBooks().size() > playerList.at(winner).getBooks().size()) {
+            winner = i;
+        }
+    }
+    displayWinner(winner);
 }
 void GoFish::refreshScreen() {
     clear();
@@ -243,10 +254,10 @@ bool GoFish::giveCards(int askingPlayer, int answeringPlayer, char rank) {
     }
 
     for (i = 0; i < playerList.at(answeringPlayer).getHand().size(); i++) {
-        
         if (playerList.at(answeringPlayer).getHand().at(i).rank == rankToSearchFor) {
             cardsToBeGiven.push_back(playerList.at(answeringPlayer).getHand().at(i));
             playerList.at(answeringPlayer).removeCard(i);
+            i = 0; // Reset loop because the vector size has changed.
         }
     }
     if (cardsToBeGiven.size() == 0) return false;
@@ -259,4 +270,24 @@ bool GoFish::giveCards(int askingPlayer, int answeringPlayer, char rank) {
 }
 vector<GFPlayer> GoFish::getPlayerList() {
     return playerList;
+}
+// char* GoFish::strToCharArr(string str) {
+//     char stringCopy[1024];
+//     strcpy(stringCopy, str.c_str());
+//     return stringCopy;
+// }
+void GoFish::displayWinner(int player) {
+    string msg;
+    if (player == 0) {
+        msg = "YOU WIN!";
+    } else {
+        msg = "COMPUTER WINS!";
+    }
+    clear();
+    refresh();
+    char msgCopy[1024];
+    strcpy(msgCopy, msg.c_str());
+    mvaddstr(20, 70, msgCopy);
+    refresh();
+    usleep(100000000);
 }

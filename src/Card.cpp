@@ -118,14 +118,15 @@ bool Card::isLessThan(Card card) {
 // @param column: the column in the terminal of the top left corner.
 // @param faceUp: draw card facing up or down?
 // @param narrow: draw the card full width or slightly narrower?
-void Card::draw(int row, int col, bool faceUp, bool narrow) {
+// @param shorter: draw the card full height or slightly shorter?
+void Card::draw(int row, int col, bool faceUp, bool narrow, bool shorter) {
     // cout << "Rendering " << this->to_string() << "\n\r";
     init_pair(1, COLOR_BLACK, COLOR_WHITE);
     init_pair(2, COLOR_RED, COLOR_WHITE);
 
     int CARD_HEIGHT, CARD_WIDTH;
 
-    CARD_HEIGHT = 4;
+    CARD_HEIGHT = (shorter) ? 3 : 4;
     CARD_WIDTH = (narrow) ? 3 : 5;
 
     if (this->suit == 2 || this->suit == 3) {
@@ -144,9 +145,13 @@ void Card::draw(int row, int col, bool faceUp, bool narrow) {
     mvaddch(row + CARD_HEIGHT - 1, col + CARD_WIDTH - 1, ACS_LRCORNER);
 
     if (!faceUp) {
-        if (narrow) {
+        if (narrow && shorter) {
+            
+        } else if (narrow) {
             mvaddstr(row + 1, col + 1, "✪");
             mvaddstr(row + 2, col + 1, " ");
+        } else if (shorter) {
+            
         } else {
             mvaddstr(row + 1, col + 1, " ✪ ");
             mvaddstr(row + 2, col + 1, "   ");

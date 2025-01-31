@@ -1,5 +1,0 @@
-Problems with current version
-
-- Does not work with more than 2 players.
-- No error handling.
-- spaghetti code
