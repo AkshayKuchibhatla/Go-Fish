@@ -128,6 +128,7 @@ void Card::draw(int row, int col, bool faceUp, bool narrow, bool shorter) {
 
     CARD_HEIGHT = (shorter) ? 3 : 4;
     CARD_WIDTH = (narrow) ? 3 : 5;
+    if (narrow && shorter) CARD_WIDTH++;
 
     if (this->suit == 2 || this->suit == 3) {
         attron(COLOR_PAIR(2));
@@ -146,18 +147,21 @@ void Card::draw(int row, int col, bool faceUp, bool narrow, bool shorter) {
 
     if (!faceUp) {
         if (narrow && shorter) {
-            
+            mvaddstr(row + 1, col + 1, "✪✪");
         } else if (narrow) {
             mvaddstr(row + 1, col + 1, "✪");
             mvaddstr(row + 2, col + 1, " ");
         } else if (shorter) {
-            
+            mvaddstr(row + 1, col + 1, " ✪ ");
         } else {
             mvaddstr(row + 1, col + 1, " ✪ ");
             mvaddstr(row + 2, col + 1, "   ");
         }
         goto endOfDraw;
     }
+
+    int suitCol, suitRow;
+    
 
     switch (this->suit) {
         case 0:
