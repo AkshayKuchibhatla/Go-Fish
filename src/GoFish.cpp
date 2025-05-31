@@ -51,6 +51,7 @@ GoFish::GoFish(bool testing) {
     }
     currentPlayer = 0;
 }
+
 void GoFish::startGame() {
     char x;
     int i;

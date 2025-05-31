@@ -170,3 +170,6 @@ bool GFPlayer::isUsr() {
     else
         return false;
 }
+void GFPlayer::askRank() {
+    
+}

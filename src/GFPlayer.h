@@ -1,5 +1,6 @@
 #pragma once
 #include "Card.h"
+#include "PubSub.h"
 #include <vector>
 #include <string>
 using namespace std;
@@ -9,6 +10,8 @@ class GFPlayer { // Object describing a player and their actions
     vector<string> books; // Stores all the ranks of cards that the user has collected 4 each of.
     int playerNumber; // Helps with orientation of cards on the playing field.
     bool handFaceUp; // Tells whether the cards in the player's hand are face up or not.
+    Subscriber sub; // Subscribes to topics.
+    Publisher pub; // Publishes to topics.
 
     public:
         int startRow;
@@ -51,4 +54,11 @@ class GFPlayer { // Object describing a player and their actions
         void makeBooks();
         // Returns a string given a rank
         string rankToString(Rank ra);
+        // Asks target player for cards of a specific rank.
+        void askRank();
+        // Asks the user to enter a card rank to ask from another player.
+        Rank promptUsrRank();
+        // Requests all cards of a certain rank from another player's hand.
+        void requestRankFromPlayer();
+
 };

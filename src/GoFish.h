@@ -6,11 +6,10 @@
 using namespace std;
 
 // This header file defines all the elements of the game
-class GoFish { // Singleton class that controls the flow of gameplay.
+class GoFish { // Class that controls the flow of gameplay.
     int currentPlayer; // Which player's turn is it?
     Deck fishPile; // The pile of cards in the center
     vector<GFPlayer> playerList; // List of the players in the game.
-    static GoFish* instance;
     public:
         // Default constructor
         GoFish();
@@ -25,6 +24,8 @@ class GoFish { // Singleton class that controls the flow of gameplay.
         void dealCard(int playerNumber);
         // Starts the game.
         void startGame();
+        // Begins the game loop.
+        void loop();
         // Advances the current player.
         void nextTurn();
         // Checks if the game is over.
